@@ -1,0 +1,18 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+.claude/
+.pytest_cache/
+
+# Virtual environments
+.venv/
+
+# Config with secrets
+config.yaml
+
+# Milvus Lite database files
+*.db

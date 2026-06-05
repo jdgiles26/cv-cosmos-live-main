@@ -1,0 +1,33 @@
+livekit:
+  url: wss://your-project.livekit.cloud
+  api_key: your-api-key
+  api_secret: your-api-secret
+  room: cosmos
+
+vllm:
+  base_url: http://localhost:8000
+  model: your-model-name
+  api_key: null
+
+qdrant:
+  url: http://localhost:6333           # default: http://localhost:6333
+  collection_name: cosmos_documents   # default: cosmos_documents
+  embedding_model: all-MiniLM-L6-v2   # default: all-MiniLM-L6-v2
+
+video_worker:
+  buffer_size: 120                               # frames before processing
+  sample_count: 20                              # frames to sample from buffer
+  target_fps: 30                              # frame capture rate
+  prompt: "Describe what is happening in these video frames."
+
+agent:
+  stt: "deepgram/nova-3:multi"
+  llm: "openai/gpt-4.1-mini"
+  tts: "cartesia/sonic-3"
+
+operator:
+  width: 1920
+  height: 1080
+  fps: 30
+  placeholder_color: [30, 30, 30]
+  display_port: 9090

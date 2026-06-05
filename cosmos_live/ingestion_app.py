@@ -1,0 +1,86 @@
+"""Entry point for the cosmos-live ingestion pipeline.
+
+Connects to a LiveKit room, subscribes to video tracks, runs vision
+analysis on buffered frames, and stores results in Qdrant.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import logging
+import signal
+import sys
+
+from cosmos_live.config import Config
+from cosmos_storage import QdrantVectorStore
+from cosmos_ingestion.vllm import VLLMVisionModel
+from cosmos_ingestion.orchestrator import Orchestrator
+
+logger = logging.getLogger("cosmos_live")
+
+
+def _setup_logging() -> None:
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)-8s %(name)s  %(message)s",
+        datefmt="%H:%M:%S",
+        stream=sys.stderr,
+    )
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+    logging.getLogger("huggingface_hub").setLevel(logging.WARNING)
+
+
+async def main() -> None:
+    _setup_logging()
+
+    config = Config.from_yaml()
+    logger.info("Loaded config for room=%s", config.livekit.room)
+
+    vector_store = QdrantVectorStore(
+        url=config.qdrant.url,
+        collection_name=config.qdrant.collection_name,
+        embedding_model=config.qdrant.embedding_model,
+    )
+
+    vision = VLLMVisionModel(config=config.vllm)
+
+    orchestrator = Orchestrator(
+        config=config.livekit,
+        vision=vision,
+        vector_store=vector_store,
+        video_worker_config=config.video_worker,
+    )
+
+    loop = asyncio.get_running_loop()
+    stop = loop.create_future()
+
+    def _signal_handler() -> None:
+        if not stop.done():
+            stop.set_result(None)
+
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        loop.add_signal_handler(sig, _signal_handler)
+
+    orchestrator_task = asyncio.create_task(orchestrator.run())
+
+    logger.info("Ingestion pipeline started — press Ctrl+C to stop")
+    await stop
+
+    logger.info("Shutting down…")
+
+    orchestrator_task.cancel()
+    try:
+        await asyncio.wait_for(orchestrator_task, timeout=5.0)
+    except (asyncio.CancelledError, asyncio.TimeoutError):
+        pass
+
+    await vision.close()
+    vector_store.close()
+    logger.info("Shutdown complete")
+
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        pass
