@@ -16,3 +16,6 @@ config.yaml
 
 # Milvus Lite database files
 *.db
+
+# Webflow Cloud / Vite
+node_modules/

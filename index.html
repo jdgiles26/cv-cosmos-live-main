@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cosmos-live</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <main>
+      <p class="kicker">cosmos-live · operator</p>
+      <h1>Live camera control is not hosted here.</h1>
+      <p class="lede">
+        Webflow Cloud serves this page. Ingestion, retrieval, and the MJPEG
+        operator still run beside LiveKit, Qdrant, and the Cosmos Reason worker.
+      </p>
+      <section>
+        <h2>Local stream</h2>
+        <p><code>http://localhost:9090/stream</code></p>
+      </section>
+      <section>
+        <h2>Processes</h2>
+        <ul>
+          <li><code>uv run python -m cosmos_live.ingestion_app</code></li>
+          <li><code>uv run python -m cosmos_live.retrieval_app console</code></li>
+          <li><code>uv run python -m cosmos_live.publisher_app --identity cam1 --camera-index 0</code></li>
+        </ul>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
