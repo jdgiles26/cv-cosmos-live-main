@@ -1,2 +1,1 @@
-const base = import.meta.env.BASE_URL || "/";
-document.documentElement.dataset.base = base;
+document.documentElement.dataset.base = import.meta.env.BASE_URL || "/";

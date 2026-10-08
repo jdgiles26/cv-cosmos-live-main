@@ -22,11 +22,11 @@ body {
 main {
   max-width: 40rem;
   margin: 0 auto;
-  padding: 4.5rem 1.25rem 3rem;
+  padding: 3.5rem 1.25rem 6.5rem;
 }
 
 .kicker {
-  margin: 0 0 1rem;
+  margin: 0 0 0.85rem;
   color: var(--muted);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
@@ -34,39 +34,72 @@ main {
 }
 
 h1 {
-  margin: 0 0 1rem;
-  font-size: 1.75rem;
+  margin: 0 0 0.9rem;
+  font-size: 1.85rem;
   font-weight: 560;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
 }
 
 .lede,
-section p,
-li {
+article p,
+section p {
   color: var(--steel);
 }
 
+.lede {
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+article,
 section {
-  margin-top: 2rem;
-  padding-top: 1rem;
+  padding-top: 0.9rem;
   border-top: 1px solid var(--line);
 }
 
 h2 {
-  margin: 0 0 0.5rem;
-  font-size: 0.8rem;
+  margin: 0 0 0.3rem;
+  font-size: 0.75rem;
   font-weight: 560;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
 }
 
-ul {
+article p,
+section p,
+ol {
   margin: 0;
-  padding-left: 1.1rem;
+}
+
+.url {
+  margin-top: 0.55rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+
+section + section {
+  margin-top: 1.25rem;
+}
+
+ol {
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.55rem;
 }
 
 code {
+  display: block;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.86em;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  color: var(--ink);
 }

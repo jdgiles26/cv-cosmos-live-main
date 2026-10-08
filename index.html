@@ -8,23 +8,40 @@
   </head>
   <body>
     <main>
-      <p class="kicker">cosmos-live · operator</p>
-      <h1>Live camera control is not hosted here.</h1>
+      <p class="kicker">cosmos-live</p>
+      <h1>Voice-directed live cameras.</h1>
       <p class="lede">
-        Webflow Cloud serves this page. Ingestion, retrieval, and the MJPEG
-        operator still run beside LiveKit, Qdrant, and the Cosmos Reason worker.
+        Publishers put each camera in a LiveKit room. Ingestion turns the frames into searchable text. A voice agent switches the output to the feed that matches the ask.
       </p>
-      <section>
-        <h2>Local stream</h2>
-        <p><code>http://localhost:9090/stream</code></p>
+
+      <section class="grid" aria-label="What it does">
+        <article>
+          <h2>Direct</h2>
+          <p>Say the camera. The agent calls switch_feed.</p>
+        </article>
+        <article>
+          <h2>Follow</h2>
+          <p>A person leaves one view and shows up in another. The output follows.</p>
+        </article>
+        <article>
+          <h2>Recall</h2>
+          <p>Ask what happened. Search is over the vision chunks, not the raw video.</p>
+        </article>
       </section>
+
       <section>
-        <h2>Processes</h2>
-        <ul>
+        <h2>Operator output</h2>
+        <p>The composited MJPEG stays on the machine that owns the cameras.</p>
+        <p class="url">localhost:9090/stream</p>
+      </section>
+
+      <section>
+        <h2>Run</h2>
+        <ol>
           <li><code>uv run python -m cosmos_live.ingestion_app</code></li>
           <li><code>uv run python -m cosmos_live.retrieval_app console</code></li>
           <li><code>uv run python -m cosmos_live.publisher_app --identity cam1 --camera-index 0</code></li>
-        </ul>
+        </ol>
       </section>
     </main>
     <script type="module" src="/src/main.js"></script>
