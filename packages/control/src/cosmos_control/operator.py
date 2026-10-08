@@ -88,6 +88,19 @@ class _MJPEGHandler(BaseHTTPRequestHandler):
         else:
             self._serve_index()
 
+    def do_OPTIONS(self) -> None:
+        self.send_response(204)
+        self.end_headers()
+
+    def end_headers(self) -> None:
+        origin = self.headers.get("Origin")
+        if origin:
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Vary", "Origin")
+            self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        super().end_headers()
+
     def _serve_index(self) -> None:
         html = (
             "<!DOCTYPE html>"
